@@ -1,0 +1,9 @@
+<script setup lang="ts">
+import AppShell from '@/components/layout/AppShell.vue';
+</script>
+
+<template>
+  <v-app>
+    <AppShell />
+  </v-app>
+</template>
