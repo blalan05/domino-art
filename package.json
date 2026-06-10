@@ -1,18 +1,13 @@
 {
   "name": "domino-art",
   "private": true,
-  "workspaces": [
-    "client",
-    "server",
-    "shared"
-  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
-    "build": "npm run build -w shared && npm run build -w server && npm run build -w client",
-    "db:generate": "npm run db:generate -w server",
-    "db:migrate": "npm run db:migrate -w server",
-    "db:seed": "npm run db:seed -w server",
-    "test": "npm run test -w shared && npm run test -w server && npm run test -w client"
+    "dev": "pnpm --filter @domino-art/shared build && concurrently \"pnpm --filter @domino-art/shared dev\" \"pnpm --filter @domino-art/server dev\" \"pnpm --filter @domino-art/client dev\"",
+    "build": "pnpm --filter @domino-art/shared build && pnpm --filter @domino-art/server build && pnpm --filter @domino-art/client build",
+    "db:generate": "pnpm --filter @domino-art/server db:generate",
+    "db:migrate": "pnpm --filter @domino-art/server db:migrate",
+    "db:seed": "pnpm --filter @domino-art/server db:seed",
+    "test": "pnpm --filter @domino-art/shared test && pnpm --filter @domino-art/server test && pnpm --filter @domino-art/client test"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

@@ -33,6 +33,9 @@ export interface Color {
   archived: boolean;
 }
 
+/** Direction the field topples: horizontal = along rows (left to right), vertical = along columns (top to bottom). */
+export type ToppleDirection = 'horizontal' | 'vertical';
+
 export interface FieldProjectData {
   rows: number;
   cols: number;
@@ -40,6 +43,7 @@ export interface FieldProjectData {
   selectedColorIds: string[];
   matchMode: 'lab' | 'rgb';
   sourceImageId?: string | null;
+  toppleDirection?: ToppleDirection;
 }
 
 export interface WallProjectData {

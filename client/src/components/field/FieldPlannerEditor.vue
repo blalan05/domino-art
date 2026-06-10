@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { Color, FieldProjectData } from '@domino-art/shared';
+import type { Color, FieldProjectData, ToppleDirection } from '@domino-art/shared';
 import { countFieldColors, totalDominoCount } from '@domino-art/shared';
 import SetupListPanel from '@/components/field/SetupListPanel.vue';
 import BuildInstructionsPanel from '@/components/field/BuildInstructionsPanel.vue';
@@ -20,6 +20,7 @@ const emit = defineEmits<{
 
 const rows = ref(props.projectData.rows);
 const cols = ref(props.projectData.cols);
+const toppleDirection = ref<ToppleDirection>(props.projectData.toppleDirection ?? 'horizontal');
 const activeColorId = ref(props.colors[0]?.id ?? null);
 const tool = ref<'paint' | 'fill' | 'select'>('paint');
 const blockSize = ref(0);
@@ -36,6 +37,11 @@ const total = computed(() => totalDominoCount(props.projectData.cells));
 
 function emitUpdate(cells: (string | null)[]) {
   emit('update', { ...props.projectData, rows: rows.value, cols: cols.value, cells });
+}
+
+function setToppleDirection(value: ToppleDirection) {
+  toppleDirection.value = value;
+  emit('update', { ...props.projectData, toppleDirection: value });
 }
 
 function resizeGrid() {
@@ -169,14 +175,19 @@ function downloadText(filename: string, content: string) {
             <v-col cols="6" md="2">
               <v-text-field v-model.number="cols" type="number" label="Columns" min="1" @change="resizeGrid" />
             </v-col>
-            <v-col cols="12" md="3">
-              <v-btn prepend-icon="mdi-image" @click="fileInput?.click()">Upload image</v-btn>
-              <input ref="fileInput" type="file" accept="image/*" hidden @change="onImageSelected" />
+            <v-col cols="6" md="2">
+              <v-select
+                :model-value="toppleDirection"
+                :items="[
+                  { title: 'Horizontal \u2192', value: 'horizontal' },
+                  { title: 'Vertical \u2193', value: 'vertical' },
+                ]"
+                label="Topple direction"
+                :disabled="readonly"
+                @update:model-value="setToppleDirection"
+              />
             </v-col>
-            <v-col cols="12" md="3">
-              <v-btn color="primary" :loading="generating" @click="generateFromImage">Generate field</v-btn>
-            </v-col>
-            <v-col cols="12" md="2">
+            <v-col cols="6" md="2">
               <v-select
                 v-model="tool"
                 :items="[
@@ -186,6 +197,13 @@ function downloadText(filename: string, content: string) {
                 ]"
                 label="Tool"
               />
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-btn prepend-icon="mdi-image" @click="fileInput?.click()">Upload image</v-btn>
+              <input ref="fileInput" type="file" accept="image/*" hidden @change="onImageSelected" />
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-btn color="primary" :loading="generating" @click="generateFromImage">Generate field</v-btn>
             </v-col>
           </v-row>
           <v-row dense class="mt-2">

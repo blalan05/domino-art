@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@domino-art/shared": "*",
+    "@domino-art/shared": "workspace:*",
     "@mdi/font": "^7.4.47",
     "idb-keyval": "^6.2.2",
     "jolt-physics": "^1.0.0",

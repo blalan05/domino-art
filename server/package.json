@@ -13,7 +13,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@domino-art/shared": "*",
+    "@domino-art/shared": "workspace:*",
     "argon2": "^0.43.0",
     "connect-pg-simple": "^10.0.0",
     "cookie-parser": "^1.4.7",

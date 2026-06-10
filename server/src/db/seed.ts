@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../load-env.js';
 import { DEFAULT_PALETTE } from '@domino-art/shared';
 import { eq } from 'drizzle-orm';
 import { db } from './index.js';

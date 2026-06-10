@@ -1,3 +1,11 @@
+import {
+  DOMINO_COL_GAP_FT,
+  DOMINO_HEIGHT_FT,
+  DOMINO_ROW_GAP_FT,
+  DOMINO_THICKNESS_FT,
+  DOMINO_WALL_COL_GAP_FT,
+  DOMINO_WIDTH_FT,
+} from './dominoDimensions.js';
 import type { Color, FieldProjectData, SetupListEntry, WallProjectData } from './types.js';
 
 export function countFieldColors(
@@ -60,8 +68,8 @@ export function totalDominoCount(cells: (string | null)[]): number {
 }
 
 export function fieldDimensionsFt(rows: number, cols: number): { widthFt: number; lengthFt: number } {
-  const lengthFt = cols * 0.0246063 + (cols - 1) * 0.0278871;
-  const widthFt = rows * 0.0787402 + (rows - 1) * 0.0131234;
+  const lengthFt = cols * DOMINO_THICKNESS_FT + (cols - 1) * DOMINO_COL_GAP_FT;
+  const widthFt = rows * DOMINO_WIDTH_FT + (rows - 1) * DOMINO_ROW_GAP_FT;
   return {
     widthFt: round2(widthFt),
     lengthFt: round2(lengthFt),
@@ -69,8 +77,8 @@ export function fieldDimensionsFt(rows: number, cols: number): { widthFt: number
 }
 
 export function wallDimensionsFt(layers: number, width: number): { widthFt: number; lengthFt: number; total: number } {
-  const lengthFt = width * 0.0246063 + (width - 1) * 0.104987;
-  const widthFt = 0.15748;
+  const lengthFt = width * DOMINO_THICKNESS_FT + (width - 1) * DOMINO_WALL_COL_GAP_FT;
+  const widthFt = DOMINO_HEIGHT_FT;
   const oddLayers = Math.ceil(layers / 2);
   const total = layers * width + oddLayers;
   return {
